@@ -5,4 +5,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :todo_lists
+  has_many :invites
+  has_many :available_todo, through: :invites, source: :todo_list
 end
