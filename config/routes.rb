@@ -5,5 +5,6 @@ Rails.application.routes.draw do
 
   resources :todo_lists, except: :new do
     resources :tasks, shallow: true, except: %i[index new show]
+    resources :invites, shallow: true, except: %i[new edit show]
   end
 end

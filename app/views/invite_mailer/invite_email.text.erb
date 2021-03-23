@@ -1,0 +1,7 @@
+Hi, <%= @invite.user.name %>
+===============================================
+
+You got invite to todo list '<%= @invite.todo_list.title %>' from <%= @invite.todo_list.user.name %>.
+Please follow to this link to accept invite: <%#= url_for(host: 'localhost', controller: :invites, action: :update, params: {id: @invite.invite_token}) %>
+Thanks for joining and have a great day!
+===============================================

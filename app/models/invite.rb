@@ -7,9 +7,15 @@ class Invite < ApplicationRecord
 
   has_secure_token :invite_token, length: 36
 
+  after_create_commit :send_invite_email
+
   private
 
   def it_is_todo_list_owner
     errors.add(:user, 'This user is todo list owner') if user.todo_lists.exists? id: todo_list.id
+  end
+
+  def send_invite_email
+    InviteMailer.with(invite: self).invite_email.deliver_now
   end
 end

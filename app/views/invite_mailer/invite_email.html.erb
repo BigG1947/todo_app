@@ -1,0 +1,13 @@
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+</head>
+<body>
+<h1>Hi, <%= @invite.user.name %></h1>
+<p>
+  You got invite to todo list '<%= @invite.todo_list.title %>' from <%= @invite.todo_list.user.name %>.<br>
+  Please follow to this link to accept invite: <%= link_to 'click', invite_url(@invite.invite_token), method: :put %>
+</p>
+<p>Thanks for joining and have a great day!</p>
+</body>
+</html>
