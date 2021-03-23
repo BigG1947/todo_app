@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
   def create
     p task_params
-    Task.create!(task_params)
+    Task.create(task_params)
     redirect_to todo_list_path params[:todo_list_id]
   end
 
