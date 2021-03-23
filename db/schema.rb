@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_23_071416) do
+ActiveRecord::Schema.define(version: 2021_03_23_143442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "invites", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "todo_list_id", null: false
+    t.string "invite_token", null: false
+    t.boolean "confirm", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["invite_token"], name: "index_invites_on_invite_token", unique: true
+    t.index ["todo_list_id"], name: "index_invites_on_todo_list_id"
+    t.index ["user_id"], name: "index_invites_on_user_id"
+  end
 
   create_table "priorities", force: :cascade do |t|
     t.string "name", null: false
