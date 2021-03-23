@@ -1,0 +1,26 @@
+<h2>It`s my todo lists:</h2>
+
+<% if @todo_lists.empty? %>
+  <h3>Todo lists - empty</h3>
+<% else %>
+  <ul>
+    <% @todo_lists.each do |todo| %>
+      <li><%= link_to todo.title, todo_list_path(todo) %> | <%= link_to 'Edit', edit_todo_list_path(todo) %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+
+<h4>Create new todo list: </h4>
+
+<%= form_with scope: :todo_list, url: todo_lists_path, method: :post do |form| %>
+  <div class="field_with_errors">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+  <div class="field_with_errors">
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+  <%= form.submit %>
+<% end %>

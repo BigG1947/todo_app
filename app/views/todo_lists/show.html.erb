@@ -1,0 +1,11 @@
+<h2><%= @todo_list.title %></h2>
+
+<% if @todo_list.tasks.empty? %>
+  <h4>Todo list have not tasks</h4>
+<% else %>
+  <ul>
+    <% @todo_list.tasks.each do |task| %>
+      <li><%= task.title %></li>
+    <% end %>
+  </ul>
+<% end %>

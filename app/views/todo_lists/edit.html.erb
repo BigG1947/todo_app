@@ -1,0 +1,15 @@
+<h2>Edit '<%= @todo_list.title %>' todo list</h2>
+
+<%= form_with model: @todo_list, url: todo_list_path, method: :put do |form| %>
+  <div class="field_with_errors">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+  <div class="field_with_errors">
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+  <%= form.submit %>
+<% end %>
+
+<%= link_to 'delete', todo_list_path(@todo_list), method: :delete %>
