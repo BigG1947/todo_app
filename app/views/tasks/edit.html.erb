@@ -1,20 +1,6 @@
-<h2><%= @todo_list.title %></h2>
+<h2>Edit '<%= @task.title %>' task:</h2>
 
-<% if @todo_list.tasks.empty? %>
-  <h4>Todo list have not tasks</h4>
-<% else %>
-  <ul>
-    <% @todo_list.tasks.each do |task| %>
-      <li><%= task.title %> | <%= task.priority.name %> | <%= task.deadline %>
-        | <%= link_to 'Edit', edit_task_path(task) %></li>
-    <% end %>
-  </ul>
-<% end %>
-
-
-<h4>Add task to todo list:</h4>
-
-<%= form_with scope: :task, url: todo_list_tasks_path(@todo_list), method: :post do |form| %>
+<%= form_with model: @task, url: task_path(@task), method: :put do |form| %>
   <div class="field_with_errors">
     <%= form.label :title %>
     <%= form.text_field :title %>
@@ -33,3 +19,5 @@
   </div>
   <%= form.submit %>
 <% end %>
+
+<%= link_to 'Delete', task_path(@task), method: :delete %>
