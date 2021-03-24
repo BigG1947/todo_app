@@ -1,12 +1,14 @@
+# frozen_string_literal: true
 class TodoListsController < ApplicationController
   before_action :authenticate_user!
+  before_action :user_have_access?, only: :show
 
   def index
     @todo_lists = current_user.todo_lists
   end
 
   def show
-    @todo_list = current_user.todo_lists.find(params[:id])
+    @todo_list = TodoList.find(params[:id])
   end
 
   def create
@@ -37,5 +39,12 @@ class TodoListsController < ApplicationController
 
   def todo_list_params_with_user
     todo_list_params.merge(user: current_user)
+  end
+
+  def user_have_access?
+    todo_list = TodoList.find(params[:id])
+    unless todo_list.user == current_user || todo_list.members.exists?(current_user.id)
+      render plain: 'You have not access to this todo list', status: 403
+    end
   end
 end

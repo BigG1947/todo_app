@@ -1,0 +1,12 @@
+<h2>Members for '<%= @todo_list.title %>' todo list:</h2>
+
+<% if @todo_list.members.empty? %>
+  <h4>Member list is empty</h4>
+<% else %>
+  <ul>
+    <% @todo_list.invites.each do |invite| %>
+      <li><%= invite.user.name %> | <%= invite.user.email %> | <%= invite.confirm %>
+        | <%= link_to 'cancel', invite_path(invite), method: :delete %></li>
+    <% end %>
+  </ul>
+<% end %>

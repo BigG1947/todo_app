@@ -6,12 +6,12 @@
   <ul>
     <% @todo_list.tasks.each do |task| %>
       <li><%= task.title %> | <%= task.priority.name %> | <%= task.deadline %>
-        | <%= link_to 'Edit', edit_task_path(task) %></li>
+        <% if @todo_list.user == current_user %> | <%= link_to 'Edit', edit_task_path(task) %><% end %></li>
     <% end %>
   </ul>
 <% end %>
 
-
+<% if @todo_list.user == current_user %>
 <h4>Add task to todo list:</h4>
 
 <%= form_with scope: :task, url: todo_list_tasks_path(@todo_list), method: :post do |form| %>
@@ -32,4 +32,19 @@
     <%= form.collection_select :priority_id, Priority.order(:level), :id, :name %>
   </div>
   <%= form.submit %>
+<% end %>
+
+
+<h4>You can invite other people to your todo list: </h4>
+
+<%= form_with scope: :invite, url: todo_list_invites_path(@todo_list), method: :post do |form| %>
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.email_field :email %>
+  </div>
+  <%= form.submit 'Send invite' %>
+<% end %>
+
+<%= link_to 'show all members', todo_list_invites_path(@todo_list) %>
+
 <% end %>
