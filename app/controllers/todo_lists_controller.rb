@@ -5,6 +5,7 @@ class TodoListsController < ApplicationController
 
   def index
     @todo_lists = current_user.todo_lists
+    @confirmed_invites = current_user.invites.where(confirm: true)
   end
 
   def show
@@ -43,7 +44,8 @@ class TodoListsController < ApplicationController
 
   def user_have_access?
     todo_list = TodoList.find(params[:id])
-    unless todo_list.user == current_user || todo_list.members.exists?(current_user.id)
+    unless todo_list.user == current_user ||
+        (todo_list.members.exists?(current_user.id) && todo_list.invites.find_by_user_id(current_user.id).confirm)
       render plain: 'You have not access to this todo list', status: 403
     end
   end

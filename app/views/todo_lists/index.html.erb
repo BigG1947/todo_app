@@ -24,3 +24,16 @@
   </div>
   <%= form.submit %>
 <% end %>
+
+
+<h4>Available to you todo lists: </h4>
+
+<% if @confirmed_invites.empty? %>
+  <h4>Have not available todo lists</h4>
+<% else %>
+  <ul>
+    <% @confirmed_invites.each do |invite| %>
+      <li><%= link_to invite.todo_list.title, todo_list_path(invite.todo_list) %></li>
+    <% end %>
+  </ul>
+<% end %>
