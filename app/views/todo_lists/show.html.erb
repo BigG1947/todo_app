@@ -6,45 +6,79 @@
   <ul>
     <% @todo_list.tasks.each do |task| %>
       <li><%= task.title %> | <%= task.priority.name %> | <%= task.deadline %>
-        <% if @todo_list.user == current_user %> | <%= link_to 'Edit', edit_task_path(task) %><% end %></li>
+        <% if @todo_list.user == current_user %> | <%= link_to 'Edit', edit_task_path(task) %>
+        <% end %></li>
     <% end %>
   </ul>
 <% end %>
 
 <% if @todo_list.user == current_user %>
-<h4>Add task to todo list:</h4>
+  <h4>Add task to todo list:</h4>
 
-<%= form_with scope: :task, url: todo_list_tasks_path(@todo_list), method: :post do |form| %>
-  <div class="field_with_errors">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
-  </div>
-  <div class="field_with_errors">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div>
-  <div class="field_with_errors">
-    <%= form.label :deadline %>
-    <%= form.datetime_local_field :deadline %>
-  </div>
-  <div class="field_with_errors">
-    <%= form.label :priority %>
-    <%= form.collection_select :priority_id, Priority.order(:level), :id, :name %>
-  </div>
-  <%= form.submit %>
+  <%= form_with scope: :task, url: todo_list_tasks_path(@todo_list), method: :post do |form| %>
+    <div class="field_with_errors">
+      <%= form.label :title %>
+      <%= form.text_field :title %>
+    </div>
+    <div class="field_with_errors">
+      <%= form.label :description %>
+      <%= form.text_area :description %>
+    </div>
+    <div class="field_with_errors">
+      <%= form.label :deadline %>
+      <%= form.datetime_local_field :deadline %>
+    </div>
+    <div class="field_with_errors">
+      <%= form.label :priority %>
+      <%= form.collection_select :priority_id, Priority.order(:level), :id, :name %>
+    </div>
+    <%= form.submit %>
+  <% end %>
+
+
+  <h4>You can invite other people to your todo list: </h4>
+
+  <%= form_with scope: :invite, url: todo_list_invites_path(@todo_list), method: :post do |form| %>
+    <div class="field">
+      <%= form.label :email %>
+      <%= form.email_field :email %>
+    </div>
+    <%= form.submit 'Send invite' %>
+  <% end %>
+
+  <%= link_to 'show all members', todo_list_invites_path(@todo_list) %>
+
 <% end %>
 
 
-<h4>You can invite other people to your todo list: </h4>
+<h4>Comments</h4>
 
-<%= form_with scope: :invite, url: todo_list_invites_path(@todo_list), method: :post do |form| %>
+<% if @todo_list.comments.empty? %>
+  <h5>Todo list have not comments</h5>
+<% else %>
+  <ul>
+    <% @todo_list.comments.limit(10).order(created_at: :desc).each do |comment| %>
+      <li>
+        <h5><%= comment.user.name %> | <%= comment.created_at %></h5>
+        <p><%= comment.text %></p>
+        <% if @todo_list.user == current_user %>
+          <%= link_to 'delete', comment_path(comment), method: :delete %>
+        <% end %>
+      </li>
+      <hr>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @todo_list.comments.count > 1 %>
+  <%= link_to 'show all comments', todo_list_comments_path(@todo_list) %>
+<% end %>
+
+
+<%= form_with scope: :comment, url: todo_list_comments_path(@todo_list), method: :post do |form| %>
   <div class="field">
-    <%= form.label :email %>
-    <%= form.email_field :email %>
+    <%= form.label :text %>
+    <%= form.text_area :text %>
   </div>
-  <%= form.submit 'Send invite' %>
-<% end %>
-
-<%= link_to 'show all members', todo_list_invites_path(@todo_list) %>
-
+  <%= form.submit 'send comment' %>
 <% end %>

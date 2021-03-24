@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root to: 'welcome#index'
 
   resources :todo_lists, except: :new do
+    resources :comments, shallow: true, only: %i[index create destroy]
     resources :tasks, shallow: true, except: %i[index new show]
     resources :invites, shallow: true, only: %i[index create destroy] do
       member do

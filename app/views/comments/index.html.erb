@@ -1,0 +1,37 @@
+<h2>Comments: </h2>
+
+<% if @comments.empty? %>
+  <h4>Todo list have not comments</h4>
+  <h5>Take first comments</h5>
+<% else %>
+  <ul>
+    <% @comments.each do |comment| %>
+      <li>
+        <h5><%= comment.user.name %> | <%= comment.created_at %></h5>
+        <p><%= comment.text %></p>
+        <% if @todo_list.user == current_user %>
+          <%= link_to 'delete', comment_path(comment), method: :delete %>
+        <% end %>
+      </li>
+      <hr>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_with scope: :comment, url: todo_list_comments_path(@todo_list), method: :post do |form| %>
+  <div class="field">
+    <%= form.label :text %>
+    <%= form.text_area :text %>
+  </div>
+  <%= form.submit 'send comment' %>
+<% end %>
+
+<h4>Page <%= @page %> of <%= @page_count %></h4>
+<p>
+  <%= form_with url: todo_list_comments_path, method: :get do |form| %>
+    go to <%= form.select :page, Range.new(1, @page_count), selected: @page %> page
+    <%= form.submit 'Go' %>
+  <% end %>
+</p>
+
+<%= link_to 'back', @todo_list %>
