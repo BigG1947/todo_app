@@ -1,39 +1,107 @@
-<h2>It`s my todo lists:</h2>
+<!--<h2>It`s my todo lists:</h2>-->
 
-<% if @todo_lists.empty? %>
-  <h3>Todo lists - empty</h3>
-<% else %>
-  <ul>
-    <% @todo_lists.each do |todo| %>
-      <li><%= link_to todo.title, todo_list_path(todo) %> | <%= link_to 'Edit', edit_todo_list_path(todo) %></li>
+<%# if @todo_lists.empty? %>
+<!--  <h3>Todo lists - empty</h3>-->
+<%# else %>
+<!--  <ul>-->
+<%# @todo_lists.each do |todo| %>
+<!--      <li><%#= link_to todo.title, todo_list_path(todo) %> | <%#= link_to 'Edit', edit_todo_list_path(todo) %></li>-->
+<%# end %>
+<!--  </ul>-->
+<%# end %>
+
+
+<!--<h4>Create new todo list: </h4>-->
+
+<%#= form_with scope: :todo_list, url: todo_lists_path, method: :post do |form| %>
+<!--  <div class="field_with_errors">-->
+<%#= form.label :title %>
+<%#= form.text_field :title %>
+<!--  </div>-->
+<!--  <div class="field_with_errors">-->
+<%#= form.label :description %>
+<%#= form.text_area :description %>
+<!--  </div>-->
+<%#= form.submit %>
+<%# end %>
+
+
+<!--<h4>Available to you todo lists: </h4>-->
+
+<%# if @confirmed_invites.empty? %>
+<!--  <h4>Have not available todo lists</h4>-->
+<%# else %>
+<!--  <ul>-->
+<%# @confirmed_invites.each do |invite| %>
+<!--      <li><%#= link_to invite.todo_list.title, todo_list_path(invite.todo_list) %></li>-->
+<%# end %>
+<!--  </ul>-->
+<%# end %>
+
+
+<main id="todo-list-bg">
+  <div class="container">
+    <section class="text-center text-md-start">
+      <h4 class="mb-4 pt-5"><strong>It`s my todo lists</strong></h4>
+      <% if @todo_lists.empty? %>
+        <h3>Todo lists - empty</h3>
+      <% else %>
+        <div class="row align-items-stretch">
+          <% @todo_lists.each do |todo| %>
+            <div class="col-lg-4 col-md-12 mb-4">
+              <div class="card shadow-5-strong bg-light" style="height: 100%">
+                <div class="card-body">
+                  <h5 class="card-title"><%= link_to todo.title, todo_list_path(todo) %></h5>
+                  <p class="small"><%= todo.created_at.strftime("%F %T") %></p>
+                  <p class="card-text">
+                    <%= todo.description %>
+                  </p>
+                  <%= link_to 'open', todo_list_path(todo), class: %w[btn btn-sm btn-rounded btn-primary] %>
+                  <%= link_to 'Edit', edit_todo_list_path(todo), class: %w[btn btn-sm btn-rounded btn-link] %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </section>
+
+    <h4 class="pt-5 mb-4 text-md-start text-center"><strong>Create new todo list</strong></h4>
+
+    <%= form_with scope: :todo_list, url: todo_lists_path, html: {class: %w[bg-light rounded shadow-5-strong p-5]}, method: :post do |form| %>
+      <div class="mb-4">
+        <%= form.label :title, class: 'form-label' %>
+        <%= form.text_field :title, class: 'form-control' %>
+      </div>
+      <div class="mb-4">
+        <%= form.label :description, class: 'form-label' %>
+        <%= form.text_area :description, rows: 5, class: 'form-control' %>
+      </div>
+      <%= form.submit 'add todo list', class: %w[btn btn-sm btn-primary] %>
     <% end %>
-  </ul>
-<% end %>
 
+    <h4 class="pt-5 mb-4 text-md-start text-center"><strong>Available to you todo lists</strong></h4>
 
-<h4>Create new todo list: </h4>
-
-<%= form_with scope: :todo_list, url: todo_lists_path, method: :post do |form| %>
-  <div class="field_with_errors">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
-  </div>
-  <div class="field_with_errors">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div>
-  <%= form.submit %>
-<% end %>
-
-
-<h4>Available to you todo lists: </h4>
-
-<% if @confirmed_invites.empty? %>
-  <h4>Have not available todo lists</h4>
-<% else %>
-  <ul>
-    <% @confirmed_invites.each do |invite| %>
-      <li><%= link_to invite.todo_list.title, todo_list_path(invite.todo_list) %></li>
+    <% if @confirmed_invites.empty? %>
+      <h5><strong>Have not available todo lists</strong></h5>
+    <% else %>
+      <div class="row align-items-stretch">
+        <% @confirmed_invites.each do |invite| %>
+          <div class="col-lg-4 col-md-12 mb-4">
+            <div class="card shadow-5-strong bg-light" style="height: 100%">
+              <div class="card-body">
+                <h5 class="card-title"><%= link_to invite.todo_list.title, todo_list_path(invite.todo_list) %></h5>
+                <p class="small">owner: <%= invite.todo_list.user.name %>
+                  | <%= invite.todo_list.created_at.strftime("%F %T") %></p>
+                <p class="card-text">
+                  <%= invite.todo_list.description %>
+                </p>
+                <%= link_to 'open', todo_list_path(invite.todo_list), class: %w[btn btn-sm btn-rounded btn-primary] %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
     <% end %>
-  </ul>
-<% end %>
+  </div>
+</main>

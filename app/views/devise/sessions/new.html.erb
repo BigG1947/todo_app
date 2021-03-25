@@ -1,26 +1,40 @@
-<h2>Log in</h2>
+<div id="intro" class="bg-image shadow-2-strong">
+  <div class="mask d-flex align-items-center h-100" style="background-color: rgba(0, 0, 0, 0.8);">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-5 col-md-8">
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: %w[bg-white rounded shadow-5-strong p-5]}) do |f| %>
+            <h3 class="text-black-50 text-center mb-4">Sign in</h3>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+            <div class="mb-4">
+              <%= f.label :email, class: 'form-label' %>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
+            </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
+            <div class="mb-4">
+              <%= f.label :password, class: 'form-label' %>
+              <%= f.password_field :password, autocomplete: "current-password", class: 'form-control' %>
+            </div>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+            <div class="row mb-4">
+              <% if devise_mapping.rememberable? %>
+                <div class="col d-flex justify-content-center">
+                  <div class="form-check">
+                    <%= f.check_box :remember_me, class: 'form-check-input' %>
+                    <%= f.label :remember_me, class: 'form-check-label' %>
+                  </div>
+                </div>
+              <% end %>
+
+<!--              <div class="col text-center">-->
+                <%#= render "devise/shared/links" %>
+<!--              </div>-->
+            </div>
+            <%= f.submit "Sign in", class: %w[btn btn-primary btn-block] %>
+            <%= link_to "Sign up", new_user_registration_path, class: %w[btn btn-primary btn-block] %>
+          <% end %>
+        </div>
+      </div>
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
