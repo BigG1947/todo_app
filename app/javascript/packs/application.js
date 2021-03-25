@@ -7,6 +7,8 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
+import * as mdb from 'mdb-ui-kit';
+import 'mdb-ui-kit/js/mdb.min'
 
 Rails.start()
 Turbolinks.start()

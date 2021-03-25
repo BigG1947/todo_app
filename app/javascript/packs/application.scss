@@ -1,0 +1,18 @@
+@import "~mdb-ui-kit/src/scss/bootstrap/bootstrap";
+@import '~mdb-ui-kit/src/scss/mdb.free';
+
+#intro {
+  background-image: url("https://wallpaperaccess.com/full/1489345.jpg");
+  height: 100vh;
+  background-size: cover;
+}
+
+.navbar .nav-link {
+  color: #fff !important;
+}
+
+#todo-list-bg {
+  background-image: url("https://wallpaperaccess.com/full/1489353.jpg");
+  min-height: 100vh;
+  background-size: cover;
+}
