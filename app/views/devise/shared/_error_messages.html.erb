@@ -1,15 +1,33 @@
 <% if resource.errors.any? %>
-  <div id="error_explanation">
-    <h2>
-      <%= I18n.t("errors.messages.not_saved",
-                 count: resource.errors.count,
-                 resource: resource.class.model_name.human.downcase)
-       %>
-    </h2>
-    <ul>
-      <% resource.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
+<!--  <div id="error_explanation">-->
+<!--    <h2>-->
+      <%# I18n.t("errors.messages.not_saved",
+         #count: resource.errors.count,
+         #resource: resource.class.model_name.human.downcase)
+      #%>
+<!--    </h2>-->
+<!--    <ul>-->
+      <%# resource.errors.full_messages.each do |message| %>
+<!--        <li><%#= message %></li>-->
+      <%# end %>
+<!--    </ul>-->
+<!--  </div>-->
+
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+    <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <div style="height: 20px; width: 20px" class="bg-danger me-2"></div>
+        <strong class="me-auto">Todo App</strong>
+        <small><%= I18n.t("errors.messages.not_saved",
+                          count: resource.errors.count,
+                          resource: resource.class.model_name.human.downcase) %></small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        <% resource.errors.full_messages.each do |message| %>
+          <p><%= message %></p>
+        <% end %>
+      </div>
+    </div>
   </div>
 <% end %>

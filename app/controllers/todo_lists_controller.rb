@@ -8,12 +8,15 @@ class TodoListsController < ApplicationController
     @confirmed_invites = current_user.invites.where(confirm: true)
   end
 
-  def show
-    @todo_list = TodoList.find(params[:id])
-  end
+  def show; end
 
   def create
-    TodoList.create(todo_list_params_with_user)
+    todo_list = TodoList.create(todo_list_params_with_user)
+    if todo_list.invalid?
+      flash[:alert] = todo_list.errors.full_messages.join(' | ')
+    else
+      flash[:notice] = 'Todo list has been successful created!'
+    end
     redirect_to todo_lists_path
   end
 
@@ -22,12 +25,20 @@ class TodoListsController < ApplicationController
   end
 
   def update
-    current_user.todo_lists.find(params[:id]).update(todo_list_params)
+    @todo_list = current_user.todo_lists.find(params[:id])
+    @todo_list.update(todo_list_params)
+    if @todo_list.invalid?
+      flash.now[:alert] = @todo_list.errors.full_messages.join(' | ')
+      render :edit
+      return
+    end
+    flash[:notice] = 'Todo list has been successful updated!'
     redirect_to todo_lists_path
   end
 
   def destroy
     current_user.todo_lists.find(params[:id]).destroy
+    flash[:notice] = 'Todo list has been successful destroyed!'
     redirect_to todo_lists_path
   end
 
@@ -43,10 +54,11 @@ class TodoListsController < ApplicationController
   end
 
   def user_have_access?
-    todo_list = TodoList.find(params[:id])
-    unless todo_list.user == current_user ||
-        (todo_list.members.exists?(current_user.id) && todo_list.invites.find_by_user_id(current_user.id).confirm)
-      render plain: 'You have not access to this todo list', status: 403
+    @todo_list = TodoList.find(params[:id])
+    unless @todo_list.user == current_user ||
+        (@todo_list.members.exists?(current_user.id) && @todo_list.invites.find_by_user_id(current_user.id).confirm)
+      flash[:alert] = 'You have not access to this todo list'
+      redirect_to todo_lists_path
     end
   end
 end

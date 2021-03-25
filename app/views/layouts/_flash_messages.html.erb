@@ -1,0 +1,29 @@
+<% if notice %>
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+    <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <div style="height: 20px; width: 20px" class="bg-primary me-2"></div>
+        <strong class="me-auto">Todo App</strong>
+        <small>notice</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        <%= notice %>
+      </div>
+    </div>
+  </div>
+<% elsif alert %>
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+    <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <div style="height: 20px; width: 20px" class="bg-danger me-2"></div>
+        <strong class="me-auto">Todo App</strong>
+        <small>alert</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        <%= alert %>
+      </div>
+    </div>
+  </div>
+<% end %>
