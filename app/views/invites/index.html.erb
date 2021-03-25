@@ -1,12 +1,56 @@
-<h2>Members for '<%= @todo_list.title %>' todo list:</h2>
+<!--<h2>Members for '<%#= @todo_list.title %>' todo list:</h2>-->
 
-<% if @todo_list.members.empty? %>
-  <h4>Member list is empty</h4>
-<% else %>
-  <ul>
-    <% @todo_list.invites.each do |invite| %>
-      <li><%= invite.user.name %> | <%= invite.user.email %> | <%= invite.confirm %>
-        | <%= link_to 'cancel', invite_path(invite), method: :delete %></li>
-    <% end %>
-  </ul>
-<% end %>
+<%# if @todo_list.members.empty? %>
+<!--  <h4>Member list is empty</h4>-->
+<%# else %>
+<!--  <ul>-->
+<%# @todo_list.invites.each do |invite| %>
+<!--      <li><%#= invite.user.name %> | <%#= invite.user.email %> | <%#= invite.confirm %>-->
+<!--        | <%#= link_to 'cancel', invite_path(invite), method: :delete %></li>-->
+<%# end %>
+<!--  </ul>-->
+<%# end %>
+
+
+<main id="todo-list-bg" class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card table-responsive-md bg-light p-3">
+          <div class="row justify-content-end">
+            <div>
+              <%= link_to 'Back', todo_list_path(@todo_list), class: %w[btn btn-sm btn-rounded btn-primary my-3] %>
+            </div>
+          </div>
+          <h4 class="h4">Members for '<span class="text-black-50"><%= @todo_list.title %></span>' todo list</h4>
+          <% if @todo_list.members.empty? %>
+            <h5 class="small">Member list is empty</h5>
+          <% else %>
+            <table class="table caption-top table-hover">
+              <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Status</th>
+                <th scope="col"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @todo_list.invites.each_with_index do |invite, index| %>
+                <tr>
+                  <th scope="row"><%= index + 1 %></th>
+                  <td><%= invite.user.name %></td>
+                  <td><%= invite.user.email %></td>
+                  <td><%= invite.confirm %></td>
+                  <td><%= link_to 'cancel', invite_path(invite), method: :delete, class: %w[btn btn-sm btn-link] %></td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
