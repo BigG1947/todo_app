@@ -1,37 +1,53 @@
-<h2>Comments: </h2>
+<main id="todo-list-bg" class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card bg-light p-3">
+          <div class="row my-3">
+            <div>
+              <%= link_to 'back', @todo_list, class: %w[btn btn-sm btn-rounded btn-primary] %>
+            </div>
+          </div>
+          <h2>Comments: </h2>
 
-<% if @comments.empty? %>
-  <h4>Todo list have not comments</h4>
-  <h5>Take first comments</h5>
-<% else %>
-  <ul>
-    <% @comments.each do |comment| %>
-      <li>
-        <h5><%= comment.user.name %> | <%= comment.created_at %></h5>
-        <p><%= comment.text %></p>
-        <% if @todo_list.user == current_user %>
-          <%= link_to 'delete', comment_path(comment), method: :delete %>
-        <% end %>
-      </li>
-      <hr>
-    <% end %>
-  </ul>
-<% end %>
+          <% if @comments.empty? %>
+            <h5>Take first comments</h5>
+          <% else %>
+            <ul class="list-unstyled">
+              <% @comments.each do |comment| %>
+                <li class="bg-white card p-4">
+                  <div class="comment-header d-md-flex justify-content-between">
+                    <h5 class="small"><%= comment.user.name %></h5>
+                    <h5 class="small"><%= comment.created_at.strftime('%F %T') %></h5>
+                  </div>
+                  <p><%= comment.text %></p>
+                  <% if @todo_list.user == current_user %>
+                    <div class="delete-btn d-flex justify-content-end">
+                      <%= link_to 'X', comment_path(comment), method: :delete, data: {confirm: 'are you sure want delete this comment?'}, class: %w[btn btn-rounded btn-sm btn-danger] %>
+                    </div>
+                  <% end %>
+                </li>
+                <hr>
+              <% end %>
+            </ul>
+            <h5>Page <%= @page %> of <%= @page_count %></h5>
+            <p>
+              <%= form_with url: todo_list_comments_path, method: :get do |form| %>
+                go to <%= form.select :page, Range.new(1, @page_count), selected: @page %> page
+                <%= form.submit 'Go', class: %w[btn btn-sm btn-rounded btn-primary] %>
+              <% end %>
+            </p>
+          <% end %>
 
-<%= form_with scope: :comment, url: todo_list_comments_path(@todo_list), method: :post do |form| %>
-  <div class="field">
-    <%= form.label :text %>
-    <%= form.text_area :text %>
+          <%= form_with scope: :comment, url: todo_list_comments_path(@todo_list), method: :post do |form| %>
+            <div class="mb-4">
+              <%= form.label :comment, class: 'form-label' %>
+              <%= form.text_area :text, class: 'form-control', rows: 5 %>
+            </div>
+            <%= form.submit 'send comment', class: %w[btn btn-sm btn-primary] %>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-  <%= form.submit 'send comment' %>
-<% end %>
-
-<h4>Page <%= @page %> of <%= @page_count %></h4>
-<p>
-  <%= form_with url: todo_list_comments_path, method: :get do |form| %>
-    go to <%= form.select :page, Range.new(1, @page_count), selected: @page %> page
-    <%= form.submit 'Go' %>
-  <% end %>
-</p>
-
-<%= link_to 'back', @todo_list %>
+</main>

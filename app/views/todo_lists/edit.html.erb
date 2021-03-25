@@ -1,15 +1,44 @@
-<h2>Edit '<%= @todo_list.title %>' todo list</h2>
+<!--<h2>Edit '<%#= @todo_list.title %>' todo list</h2>-->
 
-<%= form_with model: @todo_list, url: todo_list_path, method: :put do |form| %>
-  <div class="field_with_errors">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
-  </div>
-  <div class="field_with_errors">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div>
-  <%= form.submit %>
-<% end %>
+<%#= form_with model: @todo_list, url: todo_list_path, method: :put do |form| %>
+<!--  <div class="field_with_errors">-->
+<%#= form.label :title %>
+<%#= form.text_field :title %>
+<!--  </div>-->
+<!--  <div class="field_with_errors">-->
+<%#= form.label :description %>
+<%#= form.text_area :description %>
+<!--  </div>-->
+<%#= form.submit %>
+<%# end %>
 
-<%= link_to 'delete', todo_list_path(@todo_list), method: :delete %>
+<%#= link_to 'delete', todo_list_path(@todo_list), method: :delete %>
+
+
+<main id="todo-list-bg" class="py-5">
+  <div class="mask d-flex align-items-center h-100">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-5 col-md-8">
+          <%= form_with model: @todo_list, url: todo_list_path, html: {class: %w[bg-white rounded shadow-5-strong p-5]}, method: :put do |form| %>
+
+            <h3 class="text-black-50 text-center mb-4">Edit</h3>
+
+            <div class="mb-4">
+              <%= form.label :title, class: 'form-label' %>
+              <%= form.text_field :title, class: 'form-control' %>
+            </div>
+            <div class="mb-4">
+              <%= form.label :description, class: 'form-label' %>
+              <%= form.text_area :description, class: 'form-control' %>
+            </div>
+            <%= form.submit 'update', class: %w[btn btn-primary btn-sm btn-block] %>
+            <%= link_to 'delete', todo_list_path(@todo_list), data: {confirm: 'are you sure want delete this todo?'}, method: :delete, class: %w[btn btn-danger btn-sm btn-block] %>
+
+            <%= link_to "back", todo_lists_path, class: %w[btn btn-link btn-sm mt-5 btn-block] %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

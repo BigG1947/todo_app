@@ -1,23 +1,63 @@
-<h2>Edit '<%= @task.title %>' task:</h2>
+<!--<h2>Edit '<%#= @task.title %>' task:</h2>-->
 
-<%= form_with model: @task, url: task_path(@task), method: :put do |form| %>
-  <div class="field_with_errors">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
-  </div>
-  <div class="field_with_errors">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div>
-  <div class="field_with_errors">
-    <%= form.label :deadline %>
-    <%= form.datetime_local_field :deadline %>
-  </div>
-  <div class="field_with_errors">
-    <%= form.label :priority %>
-    <%= form.collection_select :priority_id, Priority.order(:level), :id, :name %>
-  </div>
-  <%= form.submit %>
-<% end %>
+<%#= form_with model: @task, url: task_path(@task), method: :put do |form| %>
+<!--  <div class="field_with_errors">-->
+<%#= form.label :title %>
+<%#= form.text_field :title %>
+<!--  </div>-->
+<!--  <div class="field_with_errors">-->
+<%#= form.label :description %>
+<%#= form.text_area :description %>
+<!--  </div>-->
+<!--  <div class="field_with_errors">-->
+<%#= form.label :deadline %>
+<%#= form.datetime_local_field :deadline %>
+<!--  </div>-->
+<!--  <div class="field_with_errors">-->
+<%#= form.label :priority %>
+<%#= form.collection_select :priority_id, Priority.order(:level), :id, :name %>
+<!--  </div>-->
+<%#= form.submit %>
+<%# end %>
 
-<%= link_to 'Delete', task_path(@task), method: :delete %>
+<%#= link_to 'Delete', task_path(@task), method: :delete %>
+
+
+<main id="todo-list-bg" class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card table-responsive-md bg-light p-3">
+          <div class="row mb-4">
+            <div>
+              <%= link_to 'Back', todo_list_path(@task.todo_list), class: %w[btn btn-sm btn-rounded btn-primary my-3] %>
+            </div>
+          </div>
+
+          <h4>Edit '<span class="text-black-50"><%= @task.title %></span>' task</h4>
+
+          <%= form_with model: @task, url: task_path(@task), method: :put do |form| %>
+            <div class="mb-4">
+              <%= form.label :title, class: 'form-label' %>
+              <%= form.text_field :title, class: 'form-control' %>
+            </div>
+            <div class="mb-4">
+              <%= form.label :description, class: 'form-label' %>
+              <%= form.text_area :description, class: 'form-control', rows: 5 %>
+            </div>
+            <div class="mb-4">
+              <%= form.label :deadline, class: 'form-label' %>
+              <%= form.datetime_local_field :deadline, class: 'form-control' %>
+            </div>
+            <div class="mb-4">
+              <%= form.label :priority, class: 'form-label' %>
+              <%= form.collection_select :priority_id, Priority.order(:level), :id, :name, {}, {class: 'form-select'} %>
+            </div>
+            <%= form.submit 'update task', class: %w[btn btn-sm btn-primary] %>
+            <%= link_to 'Delete', task_path(@task), method: :delete, class: %w[btn btn-sm btn-danger ms-2], data: {confirm: 'are you sure want delete this task?'} %>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

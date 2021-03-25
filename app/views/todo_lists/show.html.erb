@@ -1,84 +1,228 @@
-<h2><%= @todo_list.title %></h2>
+<!--<h2><%#= @todo_list.title %></h2>-->
 
-<% if @todo_list.tasks.empty? %>
-  <h4>Todo list have not tasks</h4>
-<% else %>
-  <ul>
-    <% @todo_list.tasks.each do |task| %>
-      <li><%= task.title %> | <%= task.priority.name %> | <%= task.deadline %>
-        <% if @todo_list.user == current_user %> | <%= link_to 'Edit', edit_task_path(task) %>
-        <% end %></li>
+<%# if @todo_list.tasks.empty? %>
+<!--  <h4>Todo list have not tasks</h4>-->
+<%# else %>
+<!--  <ul>-->
+<%# @todo_list.tasks.each do |task| %>
+<!--      <li><%#= task.title %> | <%#= task.priority.name %> | <%#= task.deadline %>-->
+<!--        <%# if @todo_list.user == current_user %> | <%#= link_to 'Edit', edit_task_path(task) %>-->
+<!--        <%# end %></li>-->
+<%# end %>
+<!--  </ul>-->
+<%# end %>
+
+<%# if @todo_list.user == current_user %>
+<!--  <h4>Add task to todo list:</h4>-->
+
+<%#= form_with scope: :task, url: todo_list_tasks_path(@todo_list), method: :post do |form| %>
+<!--    <div class="field_with_errors">-->
+<%#= form.label :title %>
+<%#= form.text_field :title %>
+<!--    </div>-->
+<!--    <div class="field_with_errors">-->
+<%#= form.label :description %>
+<%#= form.text_area :description %>
+<!--    </div>-->
+<!--    <div class="field_with_errors">-->
+<%#= form.label :deadline %>
+<%#= form.datetime_local_field :deadline %>
+<!--    </div>-->
+<!--    <div class="field_with_errors">-->
+<%#= form.label :priority %>
+<%#= form.collection_select :priority_id, Priority.order(:level), :id, :name %>
+<!--    </div>-->
+<%#= form.submit %>
+<%# end %>
+
+
+<!--  <h4>You can invite other people to your todo list: </h4>-->
+
+<%#= form_with scope: :invite, url: todo_list_invites_path(@todo_list), method: :post do |form| %>
+<!--    <div class="field">-->
+<%#= form.label :email %>
+<%#= form.email_field :email %>
+<!--    </div>-->
+<%#= form.submit 'Send invite' %>
+<%# end %>
+
+<%#= link_to 'show all members', todo_list_invites_path(@todo_list) %>
+
+<%# end %>
+
+
+<!--<h4>Comments</h4>-->
+
+<%# if @todo_list.comments.empty? %>
+<!--  <h5>Todo list have not comments</h5>-->
+<%# else %>
+<!--  <ul>-->
+<%# @todo_list.comments.limit(10).order(created_at: :desc).each do |comment| %>
+<!--      <li>-->
+<!--        <h5><%#= comment.user.name %> | <%#= comment.created_at %></h5>-->
+<!--        <p><%#= comment.text %></p>-->
+<%# if @todo_list.user == current_user %>
+<%#= link_to 'delete', comment_path(comment), method: :delete %>
+<%# end %>
+<!--      </li>-->
+<!--      <hr>-->
+<%# end %>
+<!--  </ul>-->
+<%# end %>
+
+<%# if @todo_list.comments.size > 5 %>
+<%#= link_to 'show all comments', todo_list_comments_path(@todo_list) %>
+<%# end %>
+
+
+<%#= form_with scope: :comment, url: todo_list_comments_path(@todo_list), method: :post do |form| %>
+<!--  <div class="field">-->
+<%#= form.label :text %>
+<%#= form.text_area :text %>
+<!--  </div>-->
+<%#= form.submit 'send comment' %>
+<%# end %>
+
+
+<main id="todo-list-bg" class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card table-responsive-md bg-light p-3">
+          <div class="row justify-content-end">
+            <div>
+              <%= link_to 'All todo lists', todo_lists_path, class: %w[btn btn-sm btn-rounded btn-primary my-3] %>
+            </div>
+          </div>
+          <% if @todo_list.tasks.empty? %>
+            <h3 class="h3 text-capitalize text-center">Todo list have not tasks</h3>
+          <% else %>
+            <table class="table caption-top table-hover">
+              <thead>
+              <caption class="h3 text-capitalize">
+                <%= @todo_list.title %>
+              </caption>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Priority</th>
+                <th scope="col">Deadline</th>
+                <th scope="col"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @todo_list.tasks.each_with_index do |task, index| %>
+                <tr>
+                  <th scope="row"><%= index + 1 %></th>
+                  <td><%= task.title %></td>
+                  <td><%= task.description %></td>
+                  <td><%= task.priority.name %></td>
+                  <td><%= task.deadline.strftime("%F %T") %></td>
+                  <td>
+                    <% if @todo_list.user == current_user %>
+                      <%= link_to 'Edit', edit_task_path(task), class: %w[btn btn-sm btn-link] %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <% if @todo_list.user == current_user %>
+
+      <div class="row mt-3 justify-content-center">
+        <div class="col-md-8">
+          <div class="card bg-light p-4">
+            <h3 class="h3 text-center">Add task to todo list</h3>
+            <%= form_with scope: :task, url: todo_list_tasks_path(@todo_list), method: :post do |form| %>
+              <div class="mb-4">
+                <%= form.label :title, class: 'form-label' %>
+                <%= form.text_field :title, class: 'form-control' %>
+              </div>
+              <div class="mb-4">
+                <%= form.label :description, class: 'form-label' %>
+                <%= form.text_area :description, class: 'form-control', rows: 5 %>
+              </div>
+              <div class="mb-4">
+                <%= form.label :deadline, class: 'form-label' %>
+                <%= form.datetime_local_field :deadline, class: 'form-control' %>
+              </div>
+              <div class="mb-4">
+                <%= form.label :priority, class: 'form-label' %>
+                <%= form.collection_select :priority_id, Priority.order(:level), :id, :name, {prompt: false}, {class: "form-select"} %>
+              </div>
+              <%= form.submit 'add task', class: %w[btn btn-sm btn-primary] %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-3 justify-content-center">
+        <div class="col-md-8">
+          <div class="card bg-light p-4">
+            <h3 class="h3 mb-3 text-center">You can invite other people to your todo list</h3>
+            <%= form_with scope: :invite, url: todo_list_invites_path(@todo_list), method: :post do |form| %>
+              <div class="mb-4">
+                <%= form.label :email, class: 'form-label' %>
+                <%= form.email_field :email, class: 'form-control' %>
+              </div>
+              <%= form.submit 'Send invite', class: %w[btn btn-sm btn-primary mb-4] %>
+            <% end %>
+
+            <%= link_to 'show all members', todo_list_invites_path(@todo_list), class: %w[btn btn-sm btn-link] %>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </ul>
-<% end %>
 
-<% if @todo_list.user == current_user %>
-  <h4>Add task to todo list:</h4>
+    <div class="row mt-3 justify-content-center">
+      <div class="col-md-8">
+        <div class="card bg-light p-4">
+          <h3 class="h3 mb-3 text-center">Comments</h3>
+          <% if @todo_list.comments.empty? %>
+            <h5>Todo list have not comments</h5>
+          <% else %>
+            <ul class="list-unstyled">
+              <% @todo_list.comments.limit(3).order(created_at: :desc).each do |comment| %>
+                <li class="bg-white card p-4">
+                  <div class="comment-header d-md-flex justify-content-between">
+                    <h5 class="small"><%= comment.user.name %></h5>
+                    <h5 class="small"><%= comment.created_at.strftime('%F %T') %></h5>
+                  </div>
+                  <p><%= comment.text %></p>
+                  <% if @todo_list.user == current_user %>
+                    <div class="delete-btn d-flex justify-content-end">
+                      <%= link_to 'X', comment_path(comment), method: :delete, data: {confirm: 'are you sure want delete this comment?'}, class: %w[btn btn-rounded btn-sm btn-danger] %>
+                    </div>
+                  <% end %>
+                </li>
+                <hr>
+              <% end %>
+            </ul>
+          <% end %>
 
-  <%= form_with scope: :task, url: todo_list_tasks_path(@todo_list), method: :post do |form| %>
-    <div class="field_with_errors">
-      <%= form.label :title %>
-      <%= form.text_field :title %>
+          <% if @todo_list.comments.size > 3 %>
+            <%= link_to 'show all comments', todo_list_comments_path(@todo_list), class: %w[btn btn-sm btn-link mb-5] %>
+          <% end %>
+
+
+          <%= form_with scope: :comment, url: todo_list_comments_path(@todo_list), method: :post do |form| %>
+            <div class="mb-4">
+              <%= form.label :comment, class: 'form-label' %>
+              <%= form.text_area :text, class: 'form-control', rows: 5 %>
+            </div>
+            <%= form.submit 'send comment', class: %w[btn btn-sm btn-primary] %>
+          <% end %>
+
+        </div>
+      </div>
     </div>
-    <div class="field_with_errors">
-      <%= form.label :description %>
-      <%= form.text_area :description %>
-    </div>
-    <div class="field_with_errors">
-      <%= form.label :deadline %>
-      <%= form.datetime_local_field :deadline %>
-    </div>
-    <div class="field_with_errors">
-      <%= form.label :priority %>
-      <%= form.collection_select :priority_id, Priority.order(:level), :id, :name %>
-    </div>
-    <%= form.submit %>
-  <% end %>
 
 
-  <h4>You can invite other people to your todo list: </h4>
-
-  <%= form_with scope: :invite, url: todo_list_invites_path(@todo_list), method: :post do |form| %>
-    <div class="field">
-      <%= form.label :email %>
-      <%= form.email_field :email %>
-    </div>
-    <%= form.submit 'Send invite' %>
-  <% end %>
-
-  <%= link_to 'show all members', todo_list_invites_path(@todo_list) %>
-
-<% end %>
-
-
-<h4>Comments</h4>
-
-<% if @todo_list.comments.empty? %>
-  <h5>Todo list have not comments</h5>
-<% else %>
-  <ul>
-    <% @todo_list.comments.limit(10).order(created_at: :desc).each do |comment| %>
-      <li>
-        <h5><%= comment.user.name %> | <%= comment.created_at %></h5>
-        <p><%= comment.text %></p>
-        <% if @todo_list.user == current_user %>
-          <%= link_to 'delete', comment_path(comment), method: :delete %>
-        <% end %>
-      </li>
-      <hr>
-    <% end %>
-  </ul>
-<% end %>
-
-<% if @todo_list.comments.count > 1 %>
-  <%= link_to 'show all comments', todo_list_comments_path(@todo_list) %>
-<% end %>
-
-
-<%= form_with scope: :comment, url: todo_list_comments_path(@todo_list), method: :post do |form| %>
-  <div class="field">
-    <%= form.label :text %>
-    <%= form.text_area :text %>
   </div>
-  <%= form.submit 'send comment' %>
-<% end %>
+</main>
