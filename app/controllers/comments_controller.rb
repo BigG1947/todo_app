@@ -7,11 +7,11 @@ class CommentsController < ApplicationController
 
   def index
     @todo_list = TodoList.find(params[:todo_list_id])
-    @page = params[:page].to_i || 1
-    @page_count = (@todo_list.comments.count / COMMENTS_PER_PAGE.to_f).ceil
+    @page = (params[:page] || 1).to_i
+    @page_count = (@todo_list.comments.size / COMMENTS_PER_PAGE.to_f).ceil
     @comments = @todo_list.comments
-                          .order(created_at: :desc)
-                          .limit(COMMENTS_PER_PAGE).offset((@page - 1) * COMMENTS_PER_PAGE)
+                    .order(created_at: :desc)
+                    .limit(COMMENTS_PER_PAGE).offset((@page - 1) * COMMENTS_PER_PAGE)
   end
 
   def create
