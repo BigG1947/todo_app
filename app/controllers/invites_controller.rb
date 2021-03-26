@@ -13,8 +13,12 @@ class InvitesController < ApplicationController
       return
     end
     todo_list = current_user.todo_lists.find(params[:todo_list_id])
-    Invite.create(user: user, todo_list: todo_list)
-    flash[:notice] = 'invite has been send to email'
+    invite = Invite.create(user: user, todo_list: todo_list)
+    if invite.invalid?
+      flash[:alert] = invite.errors.full_messages.join(' | ')
+    else
+      flash[:notice] = 'invite has been send to email'
+    end
     redirect_to todo_list
   end
 
