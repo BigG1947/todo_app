@@ -7,7 +7,7 @@ class CommentsController < ApplicationController
 
   def index
     @page = (params[:page] || 1).to_i
-    @comments = @todo_list.comments.page(@page).per(COMMENTS_PER_PAGE)
+    @comments = @todo_list.comments.order(created_at: :desc).page(@page).per(COMMENTS_PER_PAGE)
   end
 
   def create
