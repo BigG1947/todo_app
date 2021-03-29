@@ -30,13 +30,9 @@
                 <hr>
               <% end %>
             </ul>
-            <h5>Page <%= @page %> of <%= @page_count %></h5>
-            <p>
-              <%= form_with url: todo_list_comments_path, method: :get do |form| %>
-                go to <%= form.select :page, Range.new(1, @page_count), selected: @page %> page
-                <%= form.submit 'Go', class: %w[btn btn-sm btn-rounded btn-primary] %>
-              <% end %>
-            </p>
+            <div class="text-center">
+              <%= paginate @comments %>
+            </div>
           <% end %>
 
           <%= form_with scope: :comment, url: todo_list_comments_path(@todo_list), method: :post do |form| %>

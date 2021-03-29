@@ -7,10 +7,7 @@ class CommentsController < ApplicationController
 
   def index
     @page = (params[:page] || 1).to_i
-    @page_count = (@todo_list.comments.size / COMMENTS_PER_PAGE.to_f).ceil
-    @comments = @todo_list.comments
-                    .order(created_at: :desc)
-                    .limit(COMMENTS_PER_PAGE).offset((@page - 1) * COMMENTS_PER_PAGE)
+    @comments = @todo_list.comments.page(@page).per(COMMENTS_PER_PAGE)
   end
 
   def create

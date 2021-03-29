@@ -9,6 +9,8 @@ gem 'rails', '~> 6.1.3'
 gem 'pg', '~> 1.1'
 # Use devise gem as session and account manager
 gem 'devise'
+# Pagination
+gem 'kaminari'
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
 # Use SCSS for stylesheets
