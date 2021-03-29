@@ -6,7 +6,7 @@
 <h1>Hi, <%= @invite.user.name %></h1>
 <p>
   You got invite to todo list '<%= @invite.todo_list.title %>' from <%= @invite.todo_list.user.name %>.<br>
-  Please follow to this link to accept invite: <%= link_to 'click', invite_url(@invite.invite_token), method: :put %>
+  Please follow to this link to accept invite: <%= link_to 'click', confirm_invite_url(@invite.invite_token), method: :put %>
 </p>
 <p>Thanks for joining and have a great day!</p>
 </body>
