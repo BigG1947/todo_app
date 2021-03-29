@@ -21,23 +21,35 @@ class TodoListsController < ApplicationController
   end
 
   def edit
-    @todo_list = current_user.todo_lists.find(params[:id])
+    @todo_list = current_user.todo_lists.find_by(id: params[:id])
+    if @todo_list.nil?
+      flash[:alert] = 'Todo list is not found'
+      redirect_to todo_lists_path
+    end
   end
 
   def update
-    @todo_list = current_user.todo_lists.find(params[:id])
+    @todo_list = current_user.todo_lists.find_by(id: params[:id])
+    if @todo_list.nil?
+      flash[:alert] = 'Todo list is not found'
+      return redirect_to todo_lists_path
+    end
     @todo_list.update(todo_list_params)
     if @todo_list.invalid?
       flash.now[:alert] = @todo_list.errors.full_messages.join(' | ')
-      render :edit
-      return
+      return render :edit
     end
     flash[:notice] = 'Todo list has been successful updated!'
     redirect_to todo_lists_path
   end
 
   def destroy
-    current_user.todo_lists.find(params[:id]).destroy
+    @todo_list = current_user.todo_lists.find_by(id: params[:id])
+    if @todo_list.nil?
+      flash[:alert] = 'Todo List is not found'
+      return redirect_to todo_lists_path
+    end
+    @todo_list.destroy
     flash[:notice] = 'Todo list has been successful destroyed!'
     redirect_to todo_lists_path
   end

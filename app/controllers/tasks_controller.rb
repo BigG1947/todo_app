@@ -3,9 +3,14 @@ class TasksController < ApplicationController
   before_action :user_is_todo_list_owner?, only: %i[edit update destroy]
 
   def create
-    task = current_user.todo_lists.find(params[:todo_list_id]).tasks.create(task_params)
-    if task.invalid?
-      flash[:alert] = task.errors.full_messages.join(' | ')
+    @task = current_user.todo_lists.find_by(id: params[:todo_list_id])&.tasks&.create(task_params)
+    if @task.nil?
+      flash[:alert] = 'Todo list is not found'
+      return redirect_to todo_lists_path
+    end
+
+    if @task.invalid?
+      flash[:alert] = @task.errors.full_messages.join(' | ')
     else
       flash[:notice] = 'Task has been successful created!'
     end

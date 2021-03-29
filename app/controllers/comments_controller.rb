@@ -14,9 +14,9 @@ class CommentsController < ApplicationController
   end
 
   def create
-    comment = Comment.create(comments_params)
-    if comment.invalid?
-      flash[:alert] = comment.errors.full_messages.join(' | ')
+    @comment = Comment.create(comments_params)
+    if @comment.invalid?
+      flash[:alert] = @comment.errors.full_messages.join(' | ')
     else
       flash[:notice] = 'Comment has been successful created!'
     end
